@@ -23,7 +23,7 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name='index.html'), name="home"),
     path("login/", TemplateView.as_view(template_name='login.html'), name="about"),
     path("register/", TemplateView.as_view(template_name='register.html'), name="register"),
-    path("", include("product.urls"), name="product")
+    # path("", include("product.urls"), name="product")
 
 
 ]
