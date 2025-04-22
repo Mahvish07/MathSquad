@@ -25,5 +25,4 @@ urlpatterns = [
     path("register/", TemplateView.as_view(template_name='register.html'), name="register"),
     path("", include("quiz.urls"), name="quiz")
 
-
 ]
