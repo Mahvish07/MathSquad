@@ -9,7 +9,6 @@ urlpatterns = [
     path("register/", TemplateView.as_view(template_name='register.html'), name="register"),
     path("contest/", contest, name="contest"),
     path("achievement/", rewardsachievement, name="contest"),
-    
     path("browse/", contest, name="contest"),
     path("category/", contest, name="contest"),
     path("community/", contest, name="contest"),
