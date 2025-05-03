@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView 
-from .views import adminPanel, categoryPage, communityDiscussion, contest, index, instancefeadback, notificationreminder, problemsolvingmodule, profilemanagment, rewardsachievement, questions
+from .views import  contest, rewardsachievement, questions
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name='index.html'), name="home"),
@@ -19,7 +19,7 @@ urlpatterns = [
     path("profile/", contest, name="profile"),
     path("navigation/", contest, name="navigation"),
     path("questions/", questions, name="questions"),
-    path('problem-solving/', problemsolvingmodule, name='problem_solving_module'),
+    # path('problem-solving/', problemsolvingmodule, name='problem_solving_module'),
 
 ]
 
