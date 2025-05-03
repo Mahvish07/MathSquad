@@ -27,6 +27,14 @@ def contest(request):
     contests = Contest.objects.all()  # Fetch all contests from the database
     return render(request, "contest.html", {"contests": contests})
 
+
+
+
+
+
+
+    
+
 # Create your views here. 
     
 def index(request):
@@ -55,13 +63,13 @@ def problemsolvingmodule(request):
     
 def profilemanagment(request):
 
-    return render(request, "profile-management.html")
+    return render(request, "profile_management.html")
 
 # Create your views here. 
     
 def rewardsachievement(request):
 
-    return render(request, "rewards-achievement.html")
+    return render(request, "rewards_achievement.html")
 
 # Create your views here. 
     
@@ -72,3 +80,4 @@ def updateleaderboard(request):
 def questions(request):
     questions = Question.objects.all()  # Fetch all questions from the database
     return render(request, "contest_questions.html", {"questions": questions})
+    return render(request, "questions.html")
