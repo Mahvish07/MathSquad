@@ -15,13 +15,11 @@ urlpatterns = [
     path("feedback/", contest, name="feedback"),
     path("layout/", contest, name="layout"),
     path("notification/", contest, name="notification"),
-    path("problem_solving/", contest, name="problem_solving"),
     path("leaderboard/", contest, name="leaderboard"),
     path("profile/", contest, name="profile"),
     path("navigation/", contest, name="navigation"),
     path("questions/", questions, name="questions"),
-
-
+    path('problem-solving/', problemsolvingmodule, name='problem_solving_module'),
 
 ]
 
