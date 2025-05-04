@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from .models import Contest, Question
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Contest, Question, Prizes
+from .forms import RegistrationForm
 
 # Create your views here. 
     
@@ -12,13 +13,11 @@ def categoryPage(request):
 
     return render(request, "category-page.html")
 
-
 # Create your views here. 
     
 def communityDiscussion(request):
 
     return render(request, "community_discussion.html")
-
 
 # Create your views here. 
 
@@ -26,13 +25,6 @@ def contest(request):
     contests = Contest.objects.all()  # Fetch all contests from the database
     return render(request, "contest.html", {"contests": contests})
 
-
-
-
-
-
-
-    
 
 # Create your views here. 
     
@@ -74,8 +66,20 @@ def updateleaderboard(request):
 def questions(request):
     questions = Question.objects.all()  # Fetch all questions from the database
     return render(request, "contest_questions.html", {"questions": questions})
-    return render(request, "questions.html")
 
-# def problem_solving_module(request):
-#     problems = Problem.objects.all()  # Fetch all problem-solving challenges from the database
-#     return render(request, "problem_solving_module.html", {"problems": problems})
+def contestprizes(request, contest_id):
+    contest = get_object_or_404(Contest, id=contest_id)
+    prizes = Prizes.objects.filter(contest=contest)
+    return render(request, "contest_prizes.html", {"contest": contest, "prizes": prizes})
+
+def register_contest(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the registration to the database
+            return redirect('register_contest')  # Redirect to the same page after successful registration
+    else:
+        form = RegistrationForm()
+
+    contests = Contest.objects.all()  # Fetch all contests from the database
+    return render(request, "register_contest.html", {"contests": contests, "form": form})

@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %
+{% block title %}
 <title>Math Challenges Squad</title>
 {% endblock title %}
 
@@ -188,6 +188,9 @@
                         </div>
                         
                         <a href="#register" class="block w-full py-3 bg-neon-green text-dark-900 font-bold rounded-lg text-center hover:bg-white transition-all duration-300">
+                            Register Now
+                        </a>
+                        <a href="{% url 'register_contest' %}" class="mt-4 inline-block bg-neon-green text-dark-900 px-4 py-2 rounded-lg hover:bg-neon-yellow transition-all duration-300">
                             Register Now
                         </a>
                     </div>
@@ -439,14 +442,17 @@
                                 <input type="radio" id="source-social" name="source" class="mr-2">
                                 <label for="source-social" class="text-gray-300">Social Media</label>
                             </div>
+                            
                             <div class="flex items-center">
                                 <input type="radio" id="source-friend" name="source" class="mr-2">
                                 <label for="source-friend" class="text-gray-300">Friend/Family</label>
                             </div>
+                            
                             <div class="flex items-center">
                                 <input type="radio" id="source-school" name="source" class="mr-2">
                                 <label for="source-school" class="text-gray-300">School/College</label>
                             </div>
+                            
                             <div class="flex items-center">
                                 <input type="radio" id="source-other" name="source" class="mr-2">
                                 <label for="source-other" class="text-gray-300">Other</label>
@@ -578,7 +584,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div class="mt-4 text-gray-300">
+                    <div class="mt-4 text-gray-300 hidden">
                         <p>To participate in a contest, you need to register on our website by filling out the registration form. Once registered, you'll receive a confirmation email with details about the contest, including the date, time, and instructions on how to access the contest platform.</p>
                     </div>
                 </div>
@@ -591,7 +597,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div class="mt-4 text-gray-300">
+                    <div class="mt-4 text-gray-300 hidden">
                         <p>You'll need a computer or tablet with a stable internet connection. Our contest platform works on all modern browsers (Chrome, Firefox, Safari, Edge). We recommend using a device with a larger screen for the best experience, especially for contests involving diagrams or graphs.</p>
                     </div>
                 </div>
@@ -604,7 +610,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div class="mt-4 text-gray-300">
+                    <div class="mt-4 text-gray-300 hidden">
                         <p>Most of our contests are open to participants of all ages. However, some specialized contests may have specific age categories or requirements. These details will be clearly mentioned in the contest description. We also organize contests specifically for different age groups: elementary, middle school, high school, and college levels.</p>
                     </div>
                 </div>
@@ -617,7 +623,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div class="mt-4 text-gray-300">
+                    <div class="mt-4 text-gray-300 hidden">
                         <p>Contests are typically scored based on accuracy and speed. Correct answers earn points, with more challenging problems worth more points. Some contests may also consider the time taken to solve problems as a factor, especially in tie-breaking situations. The specific scoring system for each contest will be explained in the contest rules.</p>
                     </div>
                 </div>
@@ -630,7 +636,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div class="mt-4 text-gray-300">
+                    <div class="mt-4 text-gray-300 hidden">
                         <p>If you win a prize, you'll be notified via email with instructions on how to claim your prize. Cash prizes are typically transferred through secure payment methods like PayPal or bank transfer. Physical prizes and certificates will be shipped to the address you provide. Make sure your contact information is up-to-date in your profile.</p>
                     </div>
                 </div>
@@ -673,7 +679,6 @@
             // Mobile Menu Toggle
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
-            
             mobileMenuButton.addEventListener('click', function() {
                 mobileMenu.classList.toggle('hidden');
             });
@@ -736,8 +741,5 @@
             });
         });
     </script>
-</body>
-
-
 {% endblock content %}
 
