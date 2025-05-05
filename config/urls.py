@@ -23,8 +23,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", TemplateView.as_view(template_name='index.html'), name="home"),
-    path("login/", TemplateView.as_view(template_name='login.html'), name="about"),
-    path("signup/", TemplateView.as_view(template_name='register.html'), name="register"),
+    path('', include('authentication.urls')),
+    # path("login/", TemplateView.as_view(template_name='login.html'), name="about"),
+    # path("signup/", TemplateView.as_view(template_name='register.html'), name="register"),
     path("", include("quiz.urls"), name="quiz"),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
