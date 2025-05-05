@@ -1,96 +1,35 @@
-<section id="register" class="relative py-20 overflow-hidden bg-dark-800">
-    <div class="absolute inset-0 z-0 math-symbol math-symbol-integral"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <h2 class="text-4xl font-bold mb-16 text-center">
-            <span class="relative inline-block">
-                <span class="text-gradient bg-gradient-to-r from-neon-green to-neon-blue">Register for Contest</span>
-                <span class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-neon-green to-neon-blue rounded-full"></span>
-            </span>
-        </h2>
-        
-        <div class="max-w-3xl mx-auto contest-form-bg p-8 rounded-2xl">
-            <form class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="full-name" class="block text-white mb-2">Full Name</label>
-                        <input type="text" id="full-name" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Enter your full name">
-                    </div>
-                    
-                    <div>
-                        <label for="email" class="block text-white mb-2">Email Address</label>
-                        <input type="email" id="email" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Enter your email">
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="phone" class="block text-white mb-2">Phone Number</label>
-                        <input type="tel" id="phone" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Enter your phone number">
-                    </div>
-                    
-                    <div>
-                        <label for="age" class="block text-white mb-2">Age</label>
-                        <input type="number" id="age" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Enter your age">
-                    </div>
-                </div>
-                
-                <div>
-                    <label for="contest" class="block text-white mb-2">Select Contest</label>
-                    <select id="contest" class="w-full px-4 py-3 rounded-lg form-input">
-                        <option value="">Choose a contest</option>
-                        <option value="algebra">Algebra Masters Challenge (April 10)</option>
-                        <option value="geometry">Geometric Puzzles Challenge (April 17)</option>
-                        <option value="calculus">Calculus Champions Cup (April 24)</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label for="experience" class="block text-white mb-2">Math Experience Level</label>
-                    <select id="experience" class="w-full px-4 py-3 rounded-lg form-input">
-                        <option value="">Select your experience level</option>
-                        <option value="beginner">Beginner</option>
-                        <option value="intermediate">Intermediate</option>
-                        <option value="advanced">Advanced</option>
-                        <option value="expert">Expert</option>
-                    </select>
-                </div>
-                
-                <div>
-                    <label for="institution" class="block text-white mb-2">School/College/Institution</label>
-                    <input type="text" id="institution" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Enter your institution name">
-                </div>
-                
-                <div>
-                    <label class="block text-white mb-2">How did you hear about us?</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="flex items-center">
-                            <input type="radio" id="source-social" name="source" class="mr-2">
-                            <label for="source-social" class="text-gray-300">Social Media</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="source-friend" name="source" class="mr-2">
-                            <label for="source-friend" class="text-gray-300">Friend/Family</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="source-school" name="source" class="mr-2">
-                            <label for="source-school" class="text-gray-300">School/College</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="source-other" name="source" class="mr-2">
-                            <label for="source-other" class="text-gray-300">Other</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex items-center">
-                    <input type="checkbox" id="terms" class="mr-2">
-                    <label for="terms" class="text-gray-300">I agree to the <a href="#" class="text-neon-green hover:text-neon-green/80 transition-colors duration-300">Terms of Service</a> and <a href="#" class="text-neon-green hover:text-neon-green/80 transition-colors duration-300">Contest Rules</a></label>
-                </div>
-                
-                <button type="submit" class="w-full py-4 bg-neon-green text-dark-900 font-bold rounded-lg glow hover:bg-white transition-all duration-300">
-                    Register for Contest
-                </button>
-            </form>
+{% extends 'layout.html' %}
+
+{% block title %}
+<title>Register for Contests</title>
+{% endblock title %}
+
+{% block content %}
+<section class="relative py-20 overflow-hidden">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold mb-8 text-center">Register for Contests</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for contest in contests %}
+            <div class="contest-card dark-glass p-6 rounded-lg shadow-lg">
+                {% if contest.image %}
+                <img src="{{ contest.image.url }}" alt="{{ contest.name }}" class="w-full h-48 object-cover rounded-lg mb-4">
+                {% endif %}
+                <h2 class="text-2xl font-bold text-white mb-2">{{ contest.name }}</h2>
+                <p class="text-gray-400 mb-4">{{ contest.description|truncatewords:20 }}</p>
+                <p class="text-gray-300"><strong>Category:</strong> {{ contest.category }}</p>
+                <p class="text-gray-300"><strong>Duration:</strong> {{ contest.duration }} minutes</p>
+                <p class="text-gray-300"><strong>Participants:</strong> {{ contest.number_of_participants }}</p>
+                <form method="POST" class="mt-4">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="hidden" name="contest" value="{{ contest.id }}">
+                    <button type="submit" class="mt-4 inline-block bg-neon-green text-dark-900 px-4 py-2 rounded-lg hover:bg-neon-yellow transition-all duration-300">Register Now</button>
+                </form>
+            </div>
+            {% empty %}
+            <p class="text-gray-400 text-center col-span-full">No contests available for registration at the moment.</p>
+            {% endfor %}
         </div>
     </div>
 </section>
+{% endblock content %}

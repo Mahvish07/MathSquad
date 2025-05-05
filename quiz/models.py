@@ -21,3 +21,50 @@ class Question(models.Model):
 
     def __str__(self):
         return self.text[:50]  # Return the first 50 characters of the question
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)  # Name of the category
+    description = models.TextField(blank=True, null=True)  # Optional description of the category
+
+    def __str__(self):
+        return self.name
+
+
+class Prizes(models.Model):
+    title = models.CharField(max_length=255)  # Title of the prize
+    amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Prize amount
+    description = models.TextField(blank=True, null=True)  # Optional description of the prize
+    rank = models.PositiveIntegerField()  # Rank for the prize (e.g., 1 for First Prize)
+    contest = models.ForeignKey('Contest', on_delete=models.CASCADE, related_name='prizes')  # Link to a contest
+
+    def __str__(self):
+        return f"{self.title} - {self.contest.name}"
+
+
+class Browse(models.Model):
+    title = models.CharField(max_length=255)  # Title of the browse item
+    description = models.TextField(blank=True, null=True)  # Optional description
+    link = models.URLField()  # Link to the resource or page
+
+    def __str__(self):
+        return self.title
+
+
+class Community(models.Model):
+    name = models.CharField(max_length=255)  # Name of the community
+    description = models.TextField(blank=True, null=True)  # Optional description
+    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp for when the community was created
+    members_count = models.PositiveIntegerField(default=0)  # Number of members in the community
+
+    def __str__(self):
+        return self.name
+
+
+class Registration(models.Model):
+    user_name = models.CharField(max_length=255)  # Name of the user
+    email = models.EmailField()  # Email of the user
+    contest = models.ForeignKey('Contest', on_delete=models.CASCADE, related_name='registrations')  # Link to the contest
+    registered_at = models.DateTimeField(auto_now_add=True)  # Timestamp for when the user registered
+
+    def __str__(self):
+        return f"{self.user_name} - {self.contest.name}"
