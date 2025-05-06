@@ -4,12 +4,11 @@ from django.views.generic import TemplateView
 from .views import contest, rewardsachievement, contestprizes, register_contest
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name='index.html'), name="home"),
+    # path("", TemplateView.as_view(template_name='index.html'), name="home"),
     # path("login/", TemplateView.as_view(template_name='login.html'), name="about"),
     # path("register/", TemplateView.as_view(template_name='register.html'), name="register"),
-    path("contest/", contest, name="contest"),
+    # path("contest/", contest, name="contest"),
     path("achievement/", rewardsachievement, name="achievement"),
-    
     # path("browse/", browse, name="browse"),
     # path("category/", category, name="category"),
     # path("community/", community, name="community"),
@@ -19,6 +18,6 @@ urlpatterns = [
     path("leaderboard/", contest, name="leaderboard"),
     path("profile/", contest, name="profile"),
     path("navigation/", contest, name="navigation"),
-    path('contest/<int:contest_id>/prizes/', contestprizes, name='contest_prizes'),  # Fixed this line
+    # path('contest/<int:contest_id>/prizes/', contestprizes, name='contest_prizes'),  # Fixed this line
     path('register-contest/', register_contest, name='register_contest'),
 ]
