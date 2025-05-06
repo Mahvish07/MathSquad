@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 class Contest(models.Model):
     name = models.CharField(max_length=255)  # Name of the contest
@@ -61,10 +64,37 @@ class Community(models.Model):
 
 
 class Registration(models.Model):
-    user_name = models.CharField(max_length=255)  # Name of the user
-    email = models.EmailField()  # Email of the user
-    contest = models.ForeignKey('Contest', on_delete=models.CASCADE, related_name='registrations')  # Link to the contest
-    registered_at = models.DateTimeField(auto_now_add=True)  # Timestamp for when the user registered
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    contest = models.ForeignKey('Contest', on_delete=models.CASCADE, related_name='registrations')
+    registered_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user_name} - {self.contest.name}"
+        return f"{self.user.username} - {self.contest.name}"
+
+
+@login_required
+def contest(request):
+    message = None
+    registered_contest_id = None
+    if request.method == 'POST':
+        contest_id = request.POST.get('contest')
+        if contest_id:
+            contest_obj = Contest.objects.get(id=contest_id)
+            # Prevent duplicate registration
+            if not Registration.objects.filter(user=request.user, contest=contest_obj).exists():
+                Registration.objects.create(
+                    user=request.user,
+                    contest=contest_obj
+                )
+                message = "Registration successful!"
+            else:
+                message = "You are already registered for this contest."
+            registered_contest_id = int(contest_id)
+        else:
+            message = "Contest not found."
+    contests = Contest.objects.all()
+    return render(request, "contest.html", {
+        "contests": contests,
+        "message": message,
+        "registered_contest_id": registered_contest_id
+    })
