@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-<title>Math Challenges Squad</title>
+<title>Math Challenges Squad - Register</title>
 {% endblock title %}
 
 {% block content %}
@@ -17,26 +17,33 @@
         
         <div class="max-w-md mx-auto">
             <div class="dark-glass p-8 rounded-2xl border border-neon-blue/30">
-                <form class="space-y-6">
-                    <div>
-                        <label for="signup-name" class="block text-white mb-2">Full Name</label>
-                        <input type="text" id="signup-name" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Enter your full name">
+                {% if messages %}
+                    <div class="mb-6">
+                        {% for message in messages %}
+                            <div class="p-4 mb-2 rounded-lg {% if message.tags == 'error' %}bg-red-500/20 text-red-300{% else %}bg-green-500/20 text-green-300{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
                     </div>
+                {% endif %}
+                
+                <form class="space-y-6" method="post">
+                    {% csrf_token %}
                     
+                    {% for field in form.visible_fields %}
                     <div>
-                        <label for="signup-email" class="block text-white mb-2">Email Address</label>
-                        <input type="email" id="signup-email" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Enter your email">
+                        <label for="{{ field.id_for_label }}" class="block text-white mb-2">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <p class="text-gray-400 text-xs mt-1">{{ field.help_text }}</p>
+                        {% endif %}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <p class="text-red-400 text-xs mt-1">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                    
-                    <div>
-                        <label for="signup-password" class="block text-white mb-2">Password</label>
-                        <input type="password" id="signup-password" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Create a password">
-                    </div>
-                    
-                    <div>
-                        <label for="signup-confirm-password" class="block text-white mb-2">Confirm Password</label>
-                        <input type="password" id="signup-confirm-password" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Confirm your password">
-                    </div>
+                    {% endfor %}
                     
                     <div class="flex items-center">
                         <input type="checkbox" id="terms" class="mr-2">
@@ -48,7 +55,7 @@
                     </button>
                     
                     <div class="text-center mt-4">
-                        <p class="text-gray-400">Already have an account? <a href="#login" class="text-neon-blue hover:text-neon-blue/80 transition-colors duration-300">Login</a></p>
+                        <p class="text-gray-400">Already have an account? <a href="{% url 'login' %}" class="text-neon-blue hover:text-neon-blue/80 transition-colors duration-300">Login</a></p>
                     </div>
                 </form>
             </div>

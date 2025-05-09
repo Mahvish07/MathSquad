@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Contest, Question, Prizes
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.http import HttpResponseForbidden
+from .models import Contest, Question, Prizes, Registration
 from .forms import RegistrationForm
 
 # Create your views here. 
@@ -21,9 +24,35 @@ def communityDiscussion(request):
 
 # Create your views here. 
 
+@login_required
 def contest(request):
-    contests = Contest.objects.all()  # Fetch all contests from the database
-    return render(request, "contest.html", {"contests": contests})
+    message = None
+    registered_contest_id = None
+    if request.method == 'POST':
+        contest_id = request.POST.get('contest')
+        if contest_id:
+            contest_obj = Contest.objects.get(id=contest_id)
+            # Prevent duplicate registration
+            if not Registration.objects.filter(user=request.user, contest=contest_obj).exists():
+                Registration.objects.create(
+                    user=request.user,
+                    contest=contest_obj
+                )
+                message = "Registration successful!"
+            else:
+                message = "You are already registered for this contest."
+            registered_contest_id = int(contest_id)
+        else:
+            message = "Contest not found."
+    contests = Contest.objects.all()
+    # Get IDs of contests the user is already registered for
+    user_registered_ids = set(Registration.objects.filter(user=request.user).values_list('contest_id', flat=True))
+    return render(request, "contest.html", {
+        "contests": contests,
+        "message": message,
+        "registered_contest_id": registered_contest_id,
+        "user_registered_ids": user_registered_ids
+    })
 
 
 # Create your views here. 
@@ -73,13 +102,56 @@ def contestprizes(request, contest_id):
     return render(request, "contest_prizes.html", {"contest": contest, "prizes": prizes})
 
 def register_contest(request):
+    message = None
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()  # Save the registration to the database
-            return redirect('register_contest')  # Redirect to the same page after successful registration
+            form.save()
+            message = "Registration successful!"
+        else:
+            message = "There was an error with your registration."
     else:
         form = RegistrationForm()
 
-    contests = Contest.objects.all()  # Fetch all contests from the database
-    return render(request, "register_contest.html", {"contests": contests, "form": form})
+    contests = Contest.objects.all()
+    return render(request, "register_contest.html", {
+        "contests": contests,
+        "form": form,
+        "message": message
+    })
+
+@login_required
+def my_registered_contests(request):
+    registrations = Registration.objects.filter(user=request.user).select_related('contest')
+    contests = [reg.contest for reg in registrations]
+    return render(request, "my_registered_contests.html", {"contests": contests})
+
+@login_required
+def attempt_contest(request, contest_id):
+    contest = get_object_or_404(Contest, id=contest_id)
+    questions = contest.questions.all()
+    duration = contest.duration  # in minutes
+
+    # Track start time in session
+    session_key = f'contest_{contest_id}_start_time'
+    if session_key not in request.session:
+        request.session[session_key] = timezone.now().isoformat()
+
+    start_time = timezone.datetime.fromisoformat(request.session[session_key])
+    elapsed = (timezone.now() - start_time).total_seconds() / 60  # in minutes
+
+    if elapsed > duration:
+        return HttpResponseForbidden("Your time for this contest has expired.")
+
+    time_left = max(0, int(duration - elapsed))
+
+    if request.method == 'POST':
+        # Handle answer submission logic here
+        # Save user's answers, check correctness, etc.
+        pass
+
+    return render(request, "attempt_contest.html", {
+        "contest": contest,
+        "questions": questions,
+        "time_left": time_left,
+    })
