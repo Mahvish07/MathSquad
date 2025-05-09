@@ -141,17 +141,22 @@ def attempt_contest(request, contest_id):
     elapsed = (timezone.now() - start_time).total_seconds() / 60  # in minutes
 
     if elapsed > duration:
-        return HttpResponseForbidden("Your time for this contest has expired.")
+        return render(request, "attempt_contest.html", {
+            "contest": contest,
+            "questions": [],
+            "time_left": 0,
+            "expired": True,
+        })
 
     time_left = max(0, int(duration - elapsed))
 
     if request.method == 'POST':
         # Handle answer submission logic here
-        # Save user's answers, check correctness, etc.
         pass
 
     return render(request, "attempt_contest.html", {
         "contest": contest,
         "questions": questions,
         "time_left": time_left,
+        "expired": False,
     })
