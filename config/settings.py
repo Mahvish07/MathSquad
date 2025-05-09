@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'quiz'
 ]
+<<<<<<< HEAD
 
 
 
@@ -155,6 +156,8 @@ INSTALLED_APPS = [
 
 
 
+=======
+>>>>>>> 61339e21c480c62bb25e1e67d7f25a75270f5f76
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
