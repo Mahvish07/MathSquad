@@ -10,7 +10,7 @@
     <div class="container mx-auto px-4">
         <h1 class="text-4xl font-bold mb-8 text-center">My Registered Contests</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {% for contest in contests %}
+            {% for contest in contests %}PYTHON 
             <div class="contest-card dark-glass p-6 rounded-lg shadow-lg">
                 {% if contest.image %}
                 <img src="{{ contest.image.url }}" alt="{{ contest.name }}" class="w-full h-48 object-cover rounded-lg mb-4">
