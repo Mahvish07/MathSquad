@@ -29,8 +29,4 @@ urlpatterns = [
     # path("signup/", TemplateView.as_view(template_name='register.html'), name="register"),
     path("", include("quiz.urls"), name="quiz"),
 
-<<<<<<< HEAD
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) e
-=======
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
->>>>>>> 79a1cb849800cfb4578b410dc6d7442e61881aea
