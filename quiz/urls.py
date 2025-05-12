@@ -7,7 +7,7 @@ urlpatterns = [
     # path("", TemplateView.as_view(template_name='index.html'), name="home"),
     # path("login/", TemplateView.as_view(template_name='login.html'), name="about"),
     # path("register/", TemplateView.as_view(template_name='register.html'), name="register"),
-    path("my-registered-contests/", my_registered_contests, name="my_registered_contests"),
+    path("my-contests/", my_registered_contests, name="my_registered_contests"),
     path("contest/", contest, name="contest"),
     path("achievement/", rewardsachievement, name="achievement"),
     # path("browse/", browse, name="browse"),
