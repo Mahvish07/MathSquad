@@ -120,11 +120,15 @@ def register_contest(request):
         "message": message
     })
 
-@login_required
 def my_registered_contests(request):
-    registrations = Registration.objects.filter(user=request.user).select_related('contest')
-    contests = [reg.contest for reg in registrations]
-    return render(request, "my_registered_contests.html", {"contests": contests})
+    # Example context data
+    context = {
+        'contests': [
+            {'name': 'Algebra Contest', 'date': '2025-05-10'},
+            {'name': 'Geometry Contest', 'date': '2025-05-15'},
+        ]
+    }
+    return render(request, 'my_registered_contests.html', context)
 
 @login_required
 def attempt_contest(request, contest_id):
