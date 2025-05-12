@@ -12,7 +12,45 @@ urlpatterns = [
     path("achievement/", rewardsachievement, name="achievement"),
     # path("browse/", browse, name="browse"),
     # path("category/", category, name="category"),
-    # path("community/", community, name="community"),
+    # path("community/", commu
+    # 
+    # 
+    # 
+    # 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ---
+    
+    
+    
+    nity, name="community"),
     path("feedback/", contest, name="feedback"),
     path("layout/", contest, name="layout"),
     path("notification/", contest, name="notification"),
