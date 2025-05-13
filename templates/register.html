@@ -1,64 +1,44 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-<title>Math Challenges Squad - Register</title>
+<title>Register for Contests</title>
 {% endblock title %}
 
 {% block content %}
-<section id="signup" class="relative py-20 overflow-hidden signup-bg">
-    <div class="absolute inset-0 z-0 math-symbol math-symbol-sqrt"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <h2 class="text-4xl font-bold mb-16 text-center">
-            <span class="relative inline-block">
-                <span class="text-gradient bg-gradient-to-r from-neon-blue to-neon-green">Sign Up</span>
-                <span class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-neon-blue to-neon-green rounded-full"></span>
-            </span>
-        </h2>
-        
-        <div class="max-w-md mx-auto">
-            <div class="dark-glass p-8 rounded-2xl border border-neon-blue/30">
-                {% if messages %}
-                    <div class="mb-6">
-                        {% for message in messages %}
-                            <div class="p-4 mb-2 rounded-lg {% if message.tags == 'error' %}bg-red-500/20 text-red-300{% else %}bg-green-500/20 text-green-300{% endif %}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    </div>
+<section class="relative py-20 overflow-hidden">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold mb-8 text-center">Register for Contests</h1>
+        {% if message %}
+            <div class="mb-6 text-center text-neon-green font-semibold">{{ message }}</div>
+        {% endif %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for contest in contests %}
+            <div class="contest-card dark-glass p-6 rounded-lg shadow-lg">
+                {% if contest.image %}
+                <img src="{{ contest.image.url }}" alt="{{ contest.name }}" class="w-full h-48 object-cover rounded-lg mb-4">
                 {% endif %}
-                
-                <form class="space-y-6" method="post">
+                <h2 class="text-2xl font-bold text-white mb-2">{{ contest.name }}</h2>
+                <p class="text-gray-400 mb-4">{{ contest.description|truncatewords:20 }}</p>
+                <p class="text-gray-300"><strong>Category:</strong> {{ contest.category }}</p>
+                <p class="text-gray-300"><strong>Duration:</strong> {{ contest.duration }} minutes</p>
+                <p class="text-gray-300"><strong>Participants:</strong> {{ contest.number_of_participants }}</p>
+                <form method="POST" class="mt-4">
                     {% csrf_token %}
-                    
-                    {% for field in form.visible_fields %}
+                    <input type="hidden" name="contest" value="{{ contest.id }}">
                     <div>
-                        <label for="{{ field.id_for_label }}" class="block text-white mb-2">{{ field.label }}</label>
-                        {{ field }}
-                        {% if field.help_text %}
-                            <p class="text-gray-400 text-xs mt-1">{{ field.help_text }}</p>
-                        {% endif %}
-                        {% if field.errors %}
-                            {% for error in field.errors %}
-                                <p class="text-red-400 text-xs mt-1">{{ error }}</p>
-                            {% endfor %}
-                        {% endif %}
+                        <label for="user_name_{{ contest.id }}" class="block text-white mb-2">Full Name</label>
+                        <input type="text" name="user_name" id="user_name_{{ contest.id }}" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Enter your full name" required>
                     </div>
-                    {% endfor %}
-                    
-                    <div class="flex items-center">
-                        <input type="checkbox" id="terms" class="mr-2">
-                        <label for="terms" class="text-gray-300">I agree to the <a href="#" class="text-neon-blue hover:text-neon-blue/80 transition-colors duration-300">Terms of Service</a> and <a href="#" class="text-neon-blue hover:text-neon-blue/80 transition-colors duration-300">Privacy Policy</a></label>
+                    <div class="mt-4">
+                        <label for="email_{{ contest.id }}" class="block text-white mb-2">Email</label>
+                        <input type="email" name="email" id="email_{{ contest.id }}" class="w-full px-4 py-3 rounded-lg form-input" placeholder="Enter your email" required>
                     </div>
-                    
-                    <button type="submit" class="w-full py-4 bg-neon-blue text-white font-bold rounded-lg glow-blue hover:bg-white hover:text-neon-blue transition-all duration-300">
-                        Create Account
-                    </button>
-                    
-                    <div class="text-center mt-4">
-                        <p class="text-gray-400">Already have an account? <a href="{% url 'login' %}" class="text-neon-blue hover:text-neon-blue/80 transition-colors duration-300">Login</a></p>
-                    </div>
+                    <button type="submit" class="mt-4 inline-block bg-neon-green text-dark-900 px-4 py-2 rounded-lg hover:bg-neon-yellow transition-all duration-300">Register Now</button>
                 </form>
             </div>
+            {% empty %}
+            <p class="text-gray-400 text-center col-span-full">No contests available for registration at the moment.</p>
+            {% endfor %}
         </div>
     </div>
 </section>
